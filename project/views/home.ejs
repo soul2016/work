@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: rgba(40, 36, 36, 0.5);
+        }
+
+        table {
+            max-width: 550px;
+            margin: 6rem auto;
+            border: 2px solid pink;
+            align-items: center;
+
+        }
+
+        #data>th {
+            font-size: 2rem;
+            font-style: oblique;
+            color: aliceblue;
+            background-color: rgba(39, 24, 24, 0.5);
+        }
+
+        #name>th {
+            font-size: 1.5rem;
+            font-style: oblique;
+            color: rgb(200, 220, 239);
+            background-color: rgba(39, 24, 24, 0.5);
+        }
+
+        td {
+            font-size: 1.5rem;
+            min-width: 150px;
+            border: 2px solid rgba(86, 27, 27, 0.2);
+            min-height: 50px;
+            line-height: 50px;
+            text-align: center;
+
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr id="data">
+                <th colspan="4">数据查看</th>
+            </tr>
+            <tr id="name">
+                <th>username</th>
+                <th>password</th>
+                <th>email</th>
+                <th>telephone</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%for(let i=0;i<data.length;i++){%>
+                <tr>
+                    <td class="username">
+
+                        <%=data[i].username%>
+                    </td>
+                    <td class="password">
+
+                        <%=data[i].password%>
+                    </td>
+                    <td class="email">
+
+                        <%=data[i].email%>
+                    </td>
+                    <td class="telephone">
+
+                        <%=data[i].telephone%>
+                    </td>
+                </tr>
+                <%}%>
+        </tbody>
+    </table>
+    <script>
+
+    </script>
+</body>
+
+</html>

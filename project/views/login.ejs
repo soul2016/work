@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <%#ejs%>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+
+                background-image: url('/2.jpg');
+                /*配置了静态资源后自动在public文件下搜寻*/
+                background-attachment: fixed;
+                background-size: cover;
+            }
+
+            #login {
+                width: 250px;
+                margin: 6rem auto;
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 5px;
+                backdrop-filter: blur(10px);
+            }
+
+            #head {
+                border-radius: 5px;
+                height: 6rem;
+                text-align: center;
+                line-height: 6rem;
+                font-size: 2rem;
+                font-style: oblique;
+
+            }
+
+            #content {
+                padding: 10px 1.5rem;
+                height: 6rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+            }
+
+            .input {
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                border-radius: 5px;
+                height: 1.5rem;
+                background: rgba(255, 255, 255, 0.5);
+                outline: none;
+            }
+
+            .input:focus {
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            #btn {
+                padding: 10px 1.5rem 30px 1.5rem;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            button {
+                width: 90px;
+                height: 1.5rem;
+                background: rgba(255, 255, 255, 0.5);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 5px;
+            }
+
+            button:hover {
+                background: rgba(121, 169, 255, 0.5);
+            }
+        </style>
+</head>
+
+<body>
+    <div id="login">
+        <div id="head">
+            Login
+        </div>
+        <div id="content">
+            username:
+            <input type="text" class="input" id="username">
+            password:
+            <input type="password" class="input" id="password">
+        </div>
+        <div id="btn">
+            <button id="LoginIn">登录</button>
+            <button id="register">注册</button>
+        </div>
+    </div>
+    <script>
+        LoginIn = document.querySelector('#LoginIn')
+        register = document.querySelector('#register')
+        username = document.querySelector('#username')
+        password = document.querySelector('#password')
+        var ids = new Array
+        fetch('/api').then(res => {
+            return res.json()
+        }).then(res => {
+            ids = res
+            console.log(ids)
+        })
+        register.onclick = () => {
+            fetch('/register', {
+                method: 'POST'
+            }).then(res => res.json()).then(res => {
+                if (res) {
+                    location.href = '/register'
+                    console.log('hi')
+                }
+                else {
+                    console.log('error')
+                }
+            })
+        }
+        LoginIn.onclick = () => {
+            let flog = 0
+            for (let i = 0; i < ids.length; i++) {
+                if (ids[i].username == username.value && ids[i].password == password.value) {
+                    flog = 1
+                }
+            }
+            if (flog) {
+                location.href = '\home'
+            }
+            else {
+                window.alert('用户名错误或密码错误');
+            }
+        }
+    </script>
+</body>
+
+</html>

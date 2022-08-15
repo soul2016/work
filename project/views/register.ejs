@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            background-image: url('/3.jpg');
+            /*配置了静态资源后自动在public文件下搜寻*/
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        #login {
+            width: 250px;
+            margin: 6rem auto;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            backdrop-filter: blur(10px);
+        }
+
+        #head {
+            border-radius: 5px;
+            height: 6rem;
+            text-align: center;
+            line-height: 6rem;
+            font-size: 2rem;
+            font-style: oblique;
+
+        }
+
+        #content {
+            padding: 10px 1.5rem;
+            min-height: 6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .input {
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            height: 1.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            outline: none;
+        }
+
+        .input:focus {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #btn {
+            padding: 10px 1.5rem 30px 1.5rem;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        button {
+            width: 90px;
+            height: 1.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: rgba(121, 169, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="login">
+        <div id="head">
+            Register
+        </div>
+        <div id="content">
+            username:
+            <input type="text" class="input" id="username">
+            password:
+            <input type="password" class="input password" id="password">
+            password again:
+            <input type="password" class="input password" id="passwordAgain">
+            Email:
+            <input type="email" class="input" id="email">
+            Telephone:
+            <input type="number" class="input" id="telephone">
+
+        </div>
+        <div id="btn">
+            <button id="register">注册</button>
+            <button id="cancel">取消</button>
+
+        </div>
+    </div>
+    <script>
+        register = document.querySelector('#register')
+        username = document.querySelector('#username')
+        password = document.querySelector('#password')
+        passwordAgain = document.querySelector('#passwordAgain')
+        email = document.querySelector('#email')
+        telephone = document.querySelector('#telephone')
+        cancel = document.querySelector('#cancel')
+        var ids = new Array
+        console.log('username:',typeof(username.value))
+        //搜索数据库数据查看是否重名
+        fetch('/api').then(res => {
+            return res.json()
+        }).then(res => {
+            ids = res
+            console.log(ids)
+        })
+        register.onclick = () => {
+            if (typeof username == "undefined" || username == null || username == "") {
+                window.alert("用户名不能为空！")
+                return false;
+            }
+            else {
+                if (typeof password == "undefined" || password == null || password == "") {
+                    window.alert("密码不能为空！");
+                    return false;
+                }
+                else {
+                    if (password.value != passwordAgain.value) {
+                        window.alert("两次输入的新密码不一致！");
+                        return false;
+                    }
+                    else {
+                        if (typeof email == "undefined" || email == null || email == "") {
+                            window.alert("邮箱不能为空！");
+                            return false;
+                        }
+                        else {
+                            if (typeof telephone == "undefined" || telephone == null || telephone == "") {
+                                window.alert("电话号码不能为空！");
+                                return false;
+                            }
+                            else {
+                                for (let i = 0; i < ids.length; i++) {
+                                    if (ids[i].username == username.value) {
+                                        window.alert('该用户已被注册');
+                                        return false;
+                                    }
+                                    else {
+                                        if (ids[i].telephone == telephone.value) {
+                                            window.alert('该电话已被注册');
+                                            return false;
+                                        }
+                                        else {
+                                            if (ids[i].email == email.value) {
+                                                window.alert('该邮箱已被注册');
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                }
+                                console.log("name:",username.value)
+                                fetch('/api', {
+                                    method: "POST",
+                                    body: JSON.stringify({
+
+                                        username: username.value,
+                                        password: password.value,
+                                        email: email.value,
+                                        telephone: telephone.value
+                                    }),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                }).then(res => res.json()).then(res => {
+                                    console.log("res:", res)
+                                })
+                                window.alert("注册成功!");
+                                location.href = '/login'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        cancel.onclick = ()=>{
+            location.href = '/login'
+        }
+    </script>
+</body>
+
+</html>
